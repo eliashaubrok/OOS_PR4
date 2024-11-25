@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Transfer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">bank</a>
+</div>
+
+<h1>Coverage Summary for Class: Transfer (bank)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Transfer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88%
+  </span>
+  <span class="absValue">
+    (22/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package bank;
+&nbsp;
+&nbsp;import bank.exceptions.*;
+&nbsp;
+&nbsp;/**
+&nbsp; *the Transfer class handles transactions between two party&#39;s with no interest
+&nbsp; */
+&nbsp;public class Transfer extends Transaction{	
+&nbsp;	/**
+&nbsp;	 * the sender of the transfer
+&nbsp;	 */
+&nbsp;	protected String sender;
+&nbsp;	/**
+&nbsp;	 * the recipient of the transfer
+&nbsp;	 */
+&nbsp;	protected String recipient;
+&nbsp;
+&nbsp;	/**
+&nbsp;	 *sets amount if positive or 0, otherwise there is a message on the console
+&nbsp;	 *@param xamount (double)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public void setamount(double xamount) throws  TransferAmountAttributeException{
+<b class="fc">&nbsp;		if (xamount &gt;= 0) {</b>
+<b class="fc">&nbsp;			amount = xamount;</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			throw new TransferAmountAttributeException();</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * returns sender attribute
+&nbsp;	 * @return sender (String)
+&nbsp;	 */
+<b class="fc">&nbsp;	public String getsender() {return sender;	}</b>
+&nbsp;	/**
+&nbsp;	 * sets sender attribute
+&nbsp;	 * @param xsender (String)
+&nbsp;	 */
+<b class="fc">&nbsp;	public void setsender(String xsender) {sender = xsender;}</b>
+&nbsp;	/**
+&nbsp;	 * returns recipient attribute
+&nbsp;	 * @return recipient (String)
+&nbsp;	 */
+<b class="fc">&nbsp;	public String getrecipient() {return recipient;}</b>
+&nbsp;	/**sets recipient attribute
+&nbsp;	 * @param xrecipient (String)
+&nbsp;	 */
+<b class="fc">&nbsp;	public void setrecipient(String xrecipient) {recipient = xrecipient;}</b>
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * 3 value constructor
+&nbsp;	 * @param xdate, Date in String form
+&nbsp;	 * @param xamount, Amount as double
+&nbsp;	 * @param xdescription, Description as string
+&nbsp;	 * @throws TransactionAttributeException 
+&nbsp;	 */
+&nbsp;	public Transfer(String xdate, double xamount, String xdescription) throws TransactionAttributeException
+&nbsp;	{
+<b class="nc">&nbsp;		super(xdate, xamount, xdescription);</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * Full constructor
+&nbsp;	 * @param xdate, Date in String form
+&nbsp;	 * @param xamount, Amount as double
+&nbsp;	 * @param xdescription, Description as string
+&nbsp;	 * @param xsender, Sender as String
+&nbsp;	 * @param xrecipient, Recipient as String
+&nbsp;	 * @throws TransactionAttributeException 
+&nbsp;	 */
+&nbsp;	public Transfer(String xdate, double xamount, String xdescription, String xsender, String xrecipient) throws TransactionAttributeException
+&nbsp;	{
+<b class="fc">&nbsp;		super(xdate, xamount, xdescription);</b>
+<b class="fc">&nbsp;		this.setsender(xsender);</b>
+<b class="fc">&nbsp;		this.setrecipient(xrecipient);</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * copy-constructor
+&nbsp;	 * @param xTransfer, Transfer object that is to be copied
+&nbsp;	 */
+&nbsp;	public Transfer(Transfer xTransfer)
+&nbsp;	{
+<b class="fc">&nbsp;		super();</b>
+<b class="fc">&nbsp;		this.date = xTransfer.date;</b>
+<b class="fc">&nbsp;		this.amount = xTransfer.amount;</b>
+<b class="fc">&nbsp;		this.description = xTransfer.description;</b>
+<b class="fc">&nbsp;		this.sender = xTransfer.sender;</b>
+<b class="fc">&nbsp;		this.recipient = xTransfer.recipient;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * standart constrctor
+&nbsp;	 */
+&nbsp;	public Transfer() {
+<b class="fc">&nbsp;		super();</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * returns String as paragraph including all attributes as &#39;Name: Data&#39;
+&nbsp;	 *@return String as paragraph including all attributes as &#39;Name: Data&#39;
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public String toString() { //Gibt als Paragraph die Atribbute nach Schema &#39;Name: Daten&#39; aus
+<b class="fc">&nbsp;		return (super.toString() + (&quot;\n Sender: &quot; + this.sender + &quot;\n Recepient: &quot; + this.recipient + &quot;\n&quot;));</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 *returns the amount attribute
+&nbsp;	 *@return amount attribute (double)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public double calculate() {
+<b class="fc">&nbsp;		return this.amount;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * Checks if classtype and attributes of the given object match
+&nbsp;	 *@return true for match, false for no match
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public boolean equals(Object xObject) {
+<b class="fc">&nbsp;		if (xObject instanceof Transfer) {</b>
+<b class="fc">&nbsp;			Transfer xTransfer = (Transfer) xObject;</b>
+<b class="fc">&nbsp;			if ((super.equals(xObject))&amp;&amp;(this.sender.equals(xTransfer.sender))&amp;&amp;(this.recipient.equals(xTransfer.recipient))) {</b>
+<b class="fc">&nbsp;				return true;</b>
+&nbsp;			}
+&nbsp;		}
+<b class="nc">&nbsp;		return false;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-25 22:43</div>
+</div>
+</body>
+</html>

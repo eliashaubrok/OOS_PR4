@@ -1,0 +1,400 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PrivateBankAlt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">bank</a>
+</div>
+
+<h1>Coverage Summary for Class: PrivateBankAlt (bank)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PrivateBankAlt</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/80)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package bank;
+&nbsp;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.Comparator;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import bank.exceptions.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * a private bank
+&nbsp; */
+&nbsp;public class PrivateBankAlt implements Bank{
+&nbsp;	/**
+&nbsp;	 * name of the private bank
+&nbsp;	 */
+&nbsp;	private String name;
+&nbsp;	/**
+&nbsp;	 * bank interest on incoming payments (between 0 and 1)
+&nbsp;	 */
+&nbsp;	private double incomingInterest;
+&nbsp;	/**
+&nbsp;	 * bank interest on outgoing payments (between 0 and 1)
+&nbsp;	 */
+&nbsp;	private double outgoingInterest;
+&nbsp;	/**
+&nbsp;	 * a map of style &lt;String, list&lt;Transaktions&gt;&gt; which links transactions to an account
+&nbsp;	 */	
+<b class="nc">&nbsp;	private Map&lt;String, List&lt;Transaction&gt;&gt; accountToTransaction = new HashMap&lt;String, List&lt;Transaction&gt;&gt;();</b>
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * gets the name of the bank
+&nbsp;	 * @return name (String)
+&nbsp;	 */
+&nbsp;	public String getname(){
+<b class="nc">&nbsp;		return this.name;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * sets the name of the bank
+&nbsp;	 * @param name (String)
+&nbsp;	 */
+&nbsp;	public void setname(String xname) {
+<b class="nc">&nbsp;		this.name = xname;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * gets incoming interest
+&nbsp;	 * @return incomingInterest (double)
+&nbsp;	 */
+&nbsp;	public double getIncomingInterest() {
+<b class="nc">&nbsp;		return this.incomingInterest;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * sets incoming interest (when in between 0 and 1)
+&nbsp;	 * @param incomingInterest (double)
+&nbsp;	 */
+&nbsp;	public void setIncomingInterest(double xincomingIntrest) {
+<b class="nc">&nbsp;		if (xincomingIntrest &gt;= 0 &amp;&amp; xincomingIntrest &lt;= 1) {this.incomingInterest = xincomingIntrest;}</b>
+<b class="nc">&nbsp;		else {System.out.print(&quot;Intrest rate is not in allowed range&quot;);}</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * gets outgoing interest
+&nbsp;	 * @return outgoingInterest (double)
+&nbsp;	 */
+&nbsp;	public double getOutgoingInterest() {
+<b class="nc">&nbsp;		return this.outgoingInterest;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * sets outgoing interest (when in between 0 and 1)
+&nbsp;	 * @param outgoingInterest (double)
+&nbsp;	 */
+&nbsp;	public void setOutgoingInterest(double xoutgoingIntrest) {
+<b class="nc">&nbsp;		if (xoutgoingIntrest &gt;= 0 &amp;&amp; xoutgoingIntrest &lt;= 1) {this.outgoingInterest = xoutgoingIntrest;}</b>
+<b class="nc">&nbsp;		else {System.out.print(&quot;Intrest rate is not in allowed range&quot;);}</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * constructor
+&nbsp;	 * @param name (String)
+&nbsp;	 * @param incomingIntrest(double between 0 an 1)
+&nbsp;	 * @param outgoingIntrest(double between 0 and 1)
+&nbsp;	 * @throws TransactionAttributeException 
+&nbsp;	 */
+<b class="nc">&nbsp;	public PrivateBankAlt(String xname, double xincomingInterest, double xoutgoingInterest) throws TransactionAttributeException {</b>
+<b class="nc">&nbsp;		this.setname(xname);</b>
+<b class="nc">&nbsp;		this.setIncomingInterest(xincomingInterest);</b>
+<b class="nc">&nbsp;		this.setOutgoingInterest(xoutgoingInterest);</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * Copy-constructor (copies name, incoming interest and outgoing interest)
+&nbsp;	 * @param xPrivateBank, the to be copied PrivateBank Object
+&nbsp;	 */
+&nbsp;	public PrivateBankAlt(PrivateBankAlt xPrivateBank)
+<b class="nc">&nbsp;	{</b>
+<b class="nc">&nbsp;		this.name = xPrivateBank.name;</b>
+<b class="nc">&nbsp;		this.incomingInterest = xPrivateBank.incomingInterest;</b>
+<b class="nc">&nbsp;		this.outgoingInterest = xPrivateBank.outgoingInterest;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	/**
+&nbsp;	 * returns String as paragraph including all attributes as &#39;Name: Data&#39;
+&nbsp;	 *@return String as paragraph including all attributes as &#39;Name: Data&#39;
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public String toString() {
+<b class="nc">&nbsp;		return (&quot;Name: &quot; + this.name + &quot;\n IncomingIntrest: &quot; + this.incomingInterest + &quot;\n OutgoingIntrest: &quot; + this.outgoingInterest + &quot;\n&quot;);</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 *checks if all attributes and the classtype match
+&nbsp;	 *@param xObject, the to be checked object (Object)
+&nbsp;	 *@return true if equal
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public boolean equals(Object xObject) {
+<b class="nc">&nbsp;		if (xObject instanceof PrivateBankAlt) {</b>
+<b class="nc">&nbsp;			PrivateBankAlt xPrivateBank = (PrivateBankAlt) xObject;</b>
+<b class="nc">&nbsp;			if ((this.name == xPrivateBank.name)&amp;&amp;(this.incomingInterest==xPrivateBank.incomingInterest)&amp;&amp;(this.outgoingInterest==xPrivateBank.outgoingInterest)&amp;&amp;(this.accountToTransaction == xPrivateBank.accountToTransaction)) {</b>
+<b class="nc">&nbsp;				return true;</b>
+&nbsp;			}
+&nbsp;		}
+<b class="nc">&nbsp;		return false;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * creates an account with the given name and stores it in the bank if an account with this name doesn&#39;t already exists
+&nbsp;	 * @param account name (String)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public void createAccount(String account) throws AccountAlreadyExistsException {
+<b class="nc">&nbsp;		if(this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			throw new AccountAlreadyExistsException();</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			this.accountToTransaction.put(account, null);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * creates an account with given name and transactionlist (if both are valid and not already in Bank)
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @param transactionslist (List&lt;Transaction&gt;)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public void createAccount(String account, List&lt;Transaction&gt; transactions)
+&nbsp;			throws AccountAlreadyExistsException, TransactionAlreadyExistException, TransactionAttributeException {
+<b class="nc">&nbsp;		if(this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			throw new AccountAlreadyExistsException();</b>
+&nbsp;		}
+<b class="nc">&nbsp;		else if(this.accountToTransaction.containsValue(transactions)) {</b>
+<b class="nc">&nbsp;			throw new TransactionAlreadyExistException();</b>
+&nbsp;		}
+&nbsp;		else	{
+<b class="nc">&nbsp;			this.accountToTransaction.put(account, transactions);</b>
+&nbsp;		}
+&nbsp;		//TransactionAttributeException ?		
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * add an transaction to an account (if the account exists and the transaction doesn&#39;t)
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @param transaction (Transaction)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public void addTransaction(String account, Transaction transaction)
+&nbsp;			throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException {
+<b class="nc">&nbsp;		if(!this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			throw new AccountDoesNotExistException();</b>
+&nbsp;		}
+<b class="nc">&nbsp;		else if (this.accountToTransaction.get(account).contains(transaction)) {</b>
+<b class="nc">&nbsp;			throw new TransactionAlreadyExistException();</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			if (transaction instanceof Payment) {</b>
+<b class="nc">&nbsp;				((Payment) transaction).setIncomingIntrest(this.incomingInterest);</b>
+<b class="nc">&nbsp;				((Payment) transaction).setOutgoingIntrest(this.outgoingInterest);</b>
+&nbsp;			}
+<b class="nc">&nbsp;			this.accountToTransaction.get(account).add(transaction);</b>
+&nbsp;		}
+&nbsp;		//TransactionAttributeException ?
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * removes a transaction from account (if account and transaction exist)
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @param transaction (Transaction)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public void removeTransaction(String account, Transaction transaction)
+&nbsp;			throws AccountDoesNotExistException, TransactionDoesNotExistException {
+<b class="nc">&nbsp;		if (!this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			throw new AccountDoesNotExistException();</b>
+&nbsp;		}
+<b class="nc">&nbsp;		else if (!this.accountToTransaction.get(account).contains(transaction)){</b>
+<b class="nc">&nbsp;			throw new TransactionDoesNotExistException();</b>
+&nbsp;		}
+&nbsp;		else {
+<b class="nc">&nbsp;			this.accountToTransaction.get(account).remove(transaction);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * checks if transaction exists in bankaccount
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @param transaction (Transaction)
+&nbsp;	 * @return true if exists otherwise false
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public boolean containsTransaction(String account, Transaction transaction) {
+<b class="nc">&nbsp;		if (this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			if(this.accountToTransaction.get(account).contains(transaction)) {</b>
+<b class="nc">&nbsp;				return true;</b>
+&nbsp;			}
+&nbsp;		}
+<b class="nc">&nbsp;		return false;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;     * Calculates and returns the current account balance
+&nbsp;     * @param account name (String)
+&nbsp;     * @return the current account balance (double)
+&nbsp;     */
+&nbsp;	@Override
+&nbsp;    public double getAccountBalance(String account)
+&nbsp;    {
+<b class="nc">&nbsp;        double balance = 0.0;</b>
+<b class="nc">&nbsp;        if (this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;        	for (Transaction transaction: this.accountToTransaction.get(account)) {</b>
+<b class="nc">&nbsp;        		if(transaction instanceof Transfer){</b>
+<b class="nc">&nbsp;                    if(((Transfer) transaction).getrecipient() == account)</b>
+&nbsp;                    {
+<b class="nc">&nbsp;                        balance-= ((Transfer) transaction).amount;</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    else if(((Transfer) transaction).getsender() == account)</b>
+&nbsp;                    {
+<b class="nc">&nbsp;                        balance+= ((Transfer) transaction).amount;</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="nc">&nbsp;        		else if(transaction instanceof Payment){</b>
+<b class="nc">&nbsp;                    balance+=transaction.amount;</b>
+&nbsp;                }
+<b class="nc">&nbsp;        	}</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return balance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * gets Transaction list of bankaccount (if bankaccount exists)
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @return transactions (List&lt;Transaction&gt;) if account exists, otherwise null
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public List&lt;Transaction&gt; getTransactions(String account) {
+<b class="nc">&nbsp;		if (this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			return this.accountToTransaction.get(account);</b>
+&nbsp;		}
+<b class="nc">&nbsp;		return null;</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * gets a sorted list of transactions (if account exists) in ascending or descending order
+&nbsp;	 * @param account name (String)
+&nbsp;	 * @param asc(true when ascending order, false when descending) (boolean)
+&nbsp;	 * @returnm sorted List (List&lt;Transaction&gt;)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public List&lt;Transaction&gt; getTransactionsSorted(String account, boolean asc) {
+<b class="nc">&nbsp;		if (this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			List&lt;Transaction&gt; transactionList = this.accountToTransaction.get(account);</b>
+<b class="nc">&nbsp;	        transactionList.sort(Comparator.comparing(Transaction::getamount));</b>
+<b class="nc">&nbsp;	        if(!asc){</b>
+<b class="nc">&nbsp;	            Collections.reverse(transactionList);</b>
+&nbsp;	        }
+&nbsp;
+<b class="nc">&nbsp;	        return transactionList;</b>
+&nbsp;
+&nbsp;		}
+<b class="nc">&nbsp;		return null;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	/**
+&nbsp;     * returns a list of either positive or negative transactions (-&gt; calculated amounts).
+&nbsp;     * @param account name (String)
+&nbsp;     * @param positive selects if positive or negative transactions are listed (boolean)
+&nbsp;     * @return the list of transactions (List&lt;Transaction&gt;) or null if account doesn&#39;t exist
+&nbsp;     */
+&nbsp;	@Override
+&nbsp;    public List&lt;Transaction&gt; getTransactionsByType(String account, boolean positive)
+&nbsp;    {
+<b class="nc">&nbsp;		if (this.accountToTransaction.containsKey(account)) {</b>
+<b class="nc">&nbsp;			List&lt;Transaction&gt; transactionLinkedList= new LinkedList&lt;Transaction&gt;();</b>
+<b class="nc">&nbsp;		    for(Transaction entry: this.accountToTransaction.get(account)){</b>
+<b class="nc">&nbsp;		        if(entry.getamount()&gt;0 &amp;&amp; positive){</b>
+<b class="nc">&nbsp;		            transactionLinkedList.add(entry);</b>
+&nbsp;		        }
+<b class="nc">&nbsp;		        if(entry.getamount()&lt;=0 &amp;&amp; !positive){</b>
+<b class="nc">&nbsp;		            transactionLinkedList.add(entry);</b>
+&nbsp;		        }
+<b class="nc">&nbsp;		    }</b>
+<b class="nc">&nbsp;		    return transactionLinkedList;</b>
+&nbsp;		}
+<b class="nc">&nbsp;		return null;        </b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-25 22:43</div>
+</div>
+</body>
+</html>

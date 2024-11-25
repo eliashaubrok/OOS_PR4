@@ -1,0 +1,151 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OutgoingTransfer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">bank</a>
+</div>
+
+<h1>Coverage Summary for Class: OutgoingTransfer (bank)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OutgoingTransfer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/**
+&nbsp; * 
+&nbsp; */
+&nbsp;package bank;
+&nbsp;
+&nbsp;import bank.exceptions.TransactionAttributeException;
+&nbsp;
+&nbsp;/**
+&nbsp; * 
+&nbsp; */
+&nbsp;public class OutgoingTransfer extends Transfer {
+&nbsp;	/**
+&nbsp;	 * Full constructor
+&nbsp;	 * @param xdate, Date in String form
+&nbsp;	 * @param xamount, Amount as double
+&nbsp;	 * @param xdescription, Description as string
+&nbsp;	 * @param xsender, Sender as String
+&nbsp;	 * @param xrecipient, Recipient as String
+&nbsp;	 * @throws TransactionAttributeException 
+&nbsp;	 */
+&nbsp;	public OutgoingTransfer(String xdate, double xamount, String xdescription, String xsender, String xrecipient) throws TransactionAttributeException
+&nbsp;	{
+<b class="fc">&nbsp;		super(xdate, xamount, xdescription, xsender, xrecipient);</b>
+&nbsp;	}
+&nbsp;	/**
+&nbsp;	 * copy-constructor
+&nbsp;	 * @param xTransfer, Transfer object that is to be copied
+&nbsp;	 */
+&nbsp;	public OutgoingTransfer(Transfer xTransfer)
+&nbsp;	{
+<b class="fc">&nbsp;		super();</b>
+<b class="fc">&nbsp;		this.date = xTransfer.date;</b>
+<b class="fc">&nbsp;		this.amount = xTransfer.amount;</b>
+<b class="fc">&nbsp;		this.description = xTransfer.description;</b>
+<b class="fc">&nbsp;		this.sender = xTransfer.sender;</b>
+<b class="fc">&nbsp;		this.recipient = xTransfer.recipient;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 *returns the amount attribute
+&nbsp;	 *@return amount attribute (double)
+&nbsp;	 */
+&nbsp;	@Override
+&nbsp;	public double calculate() {
+<b class="fc">&nbsp;		return -(this.amount);</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-25 22:43</div>
+</div>
+</body>
+</html>
