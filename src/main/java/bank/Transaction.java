@@ -83,7 +83,7 @@ public abstract class Transaction implements CalculateBill{
 	public boolean equals(Object xObject) {
 		if (xObject instanceof Transaction) {
 			Transaction xTransaction = (Transaction) xObject;
-			if ((this.date == xTransaction.date)&&(this.amount == xTransaction.amount)&&(this.description==xTransaction.description)) {
+			if ((this.date.equals(xTransaction.date))&&(this.amount == xTransaction.amount)&&(this.description.equals(xTransaction.description))) {
 				return true;
 			}
 		}

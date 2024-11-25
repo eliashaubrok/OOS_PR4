@@ -279,9 +279,9 @@ public class PrivateBank implements Bank{
     {
         if (this.accountToTransaction.containsKey(account)) {
         	double balance = 0.0;
-        	for (Transaction transaction: this.accountToTransaction.get(account)) {
-                    balance+=transaction.amount;
-                }
+				for (Transaction transaction : this.accountToTransaction.get(account)) {
+					balance += transaction.calculate();
+				}
         	return balance;
         }
         return 0;
