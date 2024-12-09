@@ -32,7 +32,7 @@ public class CustomJson implements JsonDeserializer<Transaction>, JsonSerializer
                 transaction = (new Gson()).fromJson(instance, Transfer.class);
                 break;
             default:
-                throw new JsonParseException("Falsche Type");
+                throw new JsonParseException("Falscher Type");
         }
 
         return transaction;

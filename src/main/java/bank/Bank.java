@@ -98,5 +98,22 @@ public interface Bank {
      * @return the list of all transactions by type
      */
     List<Transaction> getTransactionsByType(String account, boolean positive);
+
+    /**
+     * loescht den Account zum uebergeben Accountnamen
+     *
+     * @param account
+     * @throws AccountDoesNotExistException
+     * @throws IOException
+     */
+    public void deleteAccount(String account) throws AccountDoesNotExistException, IOException;
+
+    /**
+     * Returns a list of all accountnames
+     *
+     * @return List<String> Accountnamen
+     * */
+    List<String> getAllAccounts();
+
 }
 

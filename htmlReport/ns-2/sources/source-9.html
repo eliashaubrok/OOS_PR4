@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > CalculateBill</title>
+  <title>Coverage Report > Bank</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,14 +22,14 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">bank</a>
 </div>
 
-<h1>Coverage Summary for Class: CalculateBill (bank)</h1>
+<h1>Coverage Summary for Class: Bank (bank)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
 </tr>
 <tr>
-  <td class="name">CalculateBill</td>
+  <td class="name">Bank</td>
 </tr>
 
 </table>
@@ -41,16 +41,106 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package bank;
 &nbsp;
+&nbsp;import bank.exceptions.*;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.List;
+&nbsp;
 &nbsp;/**
-&nbsp; * Interface class for billing functions
+&nbsp; * Interface for a generic bank. Provides multiple methods to handle the interaction between
+&nbsp; * accounts and transactions.
 &nbsp; */
-&nbsp;public interface CalculateBill {
-&nbsp;	/**
-&nbsp;	 * calculates the transactions
-&nbsp;	 * @return amount
-&nbsp;	 */
-&nbsp;	public double calculate();
+&nbsp;public interface Bank {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds an account to the bank.
+&nbsp;     *
+&nbsp;     * @param account the account to be added
+&nbsp;     * @throws AccountAlreadyExistsException if the account already exists
+&nbsp;     */
+&nbsp;    void createAccount(String account) throws AccountAlreadyExistsException, IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds an account (with specified transactions) to the bank.
+&nbsp;     * Important: duplicate transactions must not be added to the account!
+&nbsp;     *
+&nbsp;     * @param account      the account to be added
+&nbsp;     * @param transactions a list of already existing transactions which should be added to the newly created account
+&nbsp;     * @throws AccountAlreadyExistsException    if the account already exists
+&nbsp;     * @throws TransactionAlreadyExistException if the transaction already exists
+&nbsp;     * @throws TransactionAttributeException    if the validation check for certain attributes fail
+&nbsp;     */
+&nbsp;    void createAccount(String account, List&lt;Transaction&gt; transactions)
+&nbsp;            throws AccountAlreadyExistsException, TransactionAlreadyExistException, TransactionAttributeException, IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a transaction to an already existing account.
+&nbsp;     *
+&nbsp;     * @param account     the account to which the transaction is added
+&nbsp;     * @param transaction the transaction which should be added to the specified account
+&nbsp;     * @throws TransactionAlreadyExistException if the transaction already exists
+&nbsp;     * @throws AccountDoesNotExistException     if the specified account does not exist
+&nbsp;     * @throws TransactionAttributeException    if the validation check for certain attributes fail
+&nbsp;     */
+&nbsp;    void addTransaction(String account, Transaction transaction)
+&nbsp;            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a transaction from an account. If the transaction does not exist, an exception is
+&nbsp;     * thrown.
+&nbsp;     *
+&nbsp;     * @param account     the account from which the transaction is removed
+&nbsp;     * @param transaction the transaction which is removed from the specified account
+&nbsp;     * @throws AccountDoesNotExistException     if the specified account does not exist
+&nbsp;     * @throws TransactionDoesNotExistException if the transaction cannot be found
+&nbsp;     */
+&nbsp;    void removeTransaction(String account, Transaction transaction)
+&nbsp;            throws AccountDoesNotExistException, TransactionDoesNotExistException, IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks whether the specified transaction for a given account exists.
+&nbsp;     *
+&nbsp;     * @param account     the account from which the transaction is checked
+&nbsp;     * @param transaction the transaction to search/look for
+&nbsp;     */
+&nbsp;    boolean containsTransaction(String account, Transaction transaction);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates and returns the current account balance.
+&nbsp;     *
+&nbsp;     * @param account the selected account
+&nbsp;     * @return the current account balance
+&nbsp;     */
+&nbsp;    double getAccountBalance(String account);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of transactions for an account.
+&nbsp;     *
+&nbsp;     * @param account the selected account
+&nbsp;     * @return the list of all transactions for the specified account
+&nbsp;     */
+&nbsp;    List&lt;Transaction&gt; getTransactions(String account);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a sorted list (-&gt; calculated amounts) of transactions for a specific account. Sorts the list either in ascending or descending order
+&nbsp;     * (or empty).
+&nbsp;     *
+&nbsp;     * @param account the selected account
+&nbsp;     * @param asc     selects if the transaction list is sorted in ascending or descending order
+&nbsp;     * @return the sorted list of all transactions for the specified account
+&nbsp;     */
+&nbsp;    List&lt;Transaction&gt; getTransactionsSorted(String account, boolean asc);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of either positive or negative transactions (-&gt; calculated amounts).
+&nbsp;     *
+&nbsp;     * @param account  the selected account
+&nbsp;     * @param positive selects if positive or negative transactions are listed
+&nbsp;     * @return the list of all transactions by type
+&nbsp;     */
+&nbsp;    List&lt;Transaction&gt; getTransactionsByType(String account, boolean positive);
 &nbsp;}
+&nbsp;
 </code>
 </pre>
 </div>
@@ -74,7 +164,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-11-25 22:43</div>
+    <div style="float:right;">generated on 2024-11-26 15:03</div>
 </div>
 </body>
 </html>

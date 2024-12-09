@@ -144,7 +144,7 @@ public class PrivateBank implements Bank{
 	 */
 	@Override
 	public String toString() {
-		return ("Name: " + this.name + "\n IncomingIntrest: " + this.incomingInterest + "\n OutgoingIntrest: " + this.outgoingInterest + "\n" + "Accounts To Transactions: " + this.accountToTransaction + "\n");
+		return ("Name: " + this.name + "\n IncomingIntrest: " + this.incomingInterest + "\n OutgoingIntrest: " + this.outgoingInterest + "\n" + " Accounts To Transactions: " + this.accountToTransaction + "\n");
 	}
 	/**
 	 *checks if all attributes and the classtype match
@@ -171,13 +171,17 @@ public class PrivateBank implements Bank{
 			throw new AccountAlreadyExistsException();
 		}
 		else {
-			this.accountToTransaction.put(account, null);
+			this.accountToTransaction.put(account, new ArrayList<Transaction> ());
 			try {
 				this.writeAccount(account);
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
 		}
+	}
+
+	public void deleteAccounts ()  {
+		this.accountToTransaction.clear();
 	}
 	/**
 	 * creates an account with given name and transactionlist (if both are valid and not already in Bank)
@@ -390,5 +394,25 @@ public class PrivateBank implements Bank{
 		FileWriter writer = new FileWriter(this.directoryName + account + ".json");
 		gson.toJson(jsonElementList, writer);
 		writer.close();
+	}
+
+	@Override
+	public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
+		try {
+			if(this.accountToTransaction.containsKey(account)) {
+				this.accountToTransaction.remove(account);
+			}
+			else {
+				throw new AccountDoesNotExistException();
+			}
+		}
+		catch (AccountDoesNotExistException exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<String> getAllAccounts() {
+		return (new ArrayList<>(this.accountToTransaction.keySet()));
 	}
 }
