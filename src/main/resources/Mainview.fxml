@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ListView layoutX="22.0" layoutY="22.0" prefHeight="319.0" prefWidth="557.0" />
-      <Button layoutX="22.0" layoutY="358.0" mnemonicParsing="false" text="Neuer Account" />
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.MainViewController">
+   <ListView layoutX="22.0" layoutY="22.0" prefHeight="319.0" prefWidth="557.0" fx:id="accountListView"/>
+   <Button layoutX="22.0" layoutY="358.0" mnemonicParsing="false" text="Neuer Account" fx:id="createAccountButton" onAction="#handleCreateAccount"/>
 </AnchorPane>

@@ -401,6 +401,17 @@ public class PrivateBank implements Bank{
 		try {
 			if(this.accountToTransaction.containsKey(account)) {
 				this.accountToTransaction.remove(account);
+				// Lösche die zugehörige JSON-Datei
+				File accountFile = new File(this.directoryName + account + ".json");
+				if (accountFile.exists()) {
+					if (accountFile.delete()) {
+						System.out.println("Die Datei " + accountFile.getName() + " wurde erfolgreich gelöscht.");
+					} else {
+						System.out.println("Die Datei " + accountFile.getName() + " konnte nicht gelöscht werden.");
+					}
+				} else {
+					System.out.println("Die Datei für das angegebene Konto existiert nicht.");
+				}
 			}
 			else {
 				throw new AccountDoesNotExistException();

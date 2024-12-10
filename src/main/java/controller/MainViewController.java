@@ -7,9 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import bank.PrivateBank;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -26,7 +30,6 @@ public class MainViewController {
     public void initialize() throws AccountAlreadyExistsException, TransactionAttributeException, IOException {
         // Initialisierung der Bank und der ListView
         privateBank = new PrivateBank("B1", 0.1, 0.2, "C:\\Users\\elias\\OneDrive\\Dokumente\\FH Aachen-DESKTOP-DA0PU66\\OOS\\PR4\\OOS_PR4\\BankTest/");
-        privateBank.createAccount("u1");
         accounts = FXCollections.observableArrayList(privateBank.getAllAccounts());
         accountListView.setItems(accounts);
 
@@ -36,7 +39,13 @@ public class MainViewController {
             ContextMenu contextMenu = new ContextMenu();
 
             MenuItem selectMenuItem = new MenuItem("Auswählen");
-            selectMenuItem.setOnAction(e -> handleSelectAccount(cell.getItem()));
+            selectMenuItem.setOnAction(e -> {
+                try {
+                    handleSelectAccount(cell.getItem());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
 
             MenuItem deleteMenuItem = new MenuItem("Löschen");
             deleteMenuItem.setOnAction(e -> handleDeleteAccount(cell.getItem()));
@@ -65,9 +74,19 @@ public class MainViewController {
         });
     }
 
-    private void handleSelectAccount(String accountName) {
+    private void handleSelectAccount(String accountName) throws IOException {
         // Szenenwechsel zu AccountView
-        // Szenenwechsel-Logik wird hier implementiert
+        // Lade die FXML-Datei für die AccountView
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AccountView.fxml"));
+        Parent accountView = loader.load();
+
+        // Holen Sie sich den AccountViewController und setzen Sie den Account-Namen
+        AccountViewController controller = loader.getController();
+        controller.initialize(accountName, privateBank);
+
+        // Erstelle eine neue Szene mit der AccountView
+        Stage stage = (Stage) accountListView.getScene().getWindow(); // Aktuelle Stage
+        stage.setScene(new Scene(accountView));
         System.out.println("Account ausgewählt: " + accountName);
     }
 
