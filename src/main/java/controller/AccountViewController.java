@@ -1,7 +1,6 @@
 package controller;
 
-import bank.Payment;
-import bank.Transfer;
+import bank.*;
 import bank.exceptions.AccountAlreadyExistsException;
 import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAttributeException;
@@ -10,16 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import bank.PrivateBank;
-import bank.Transaction;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.io.IOException;
 
@@ -34,15 +30,15 @@ public class AccountViewController {
     @FXML
     private Button backButton; // Button zum Zurückwechseln
     @FXML
-    private Button newTransactionButton; // Button
+    private Button newTransactionButton; // Button zum Erstellen einer neuen Transaction
     @FXML
-    private Button aufsteigendButton; // Button
+    private Button aufsteigendButton; // Button zur aufsteigenden Sortierung der Transactions
     @FXML
-    private Button absteigendButton; // Button
+    private Button absteigendButton; // Button zur absteigenden Sortierung der Transactions
     @FXML
-    private Button positiveButton; // Button
+    private Button positiveButton; // Button zum Anzeigen von nur positiven Transactions
     @FXML
-    private Button negativeButton; // Button
+    private Button negativeButton; // Button zum Anzeigen von nur negativen Transactions
 
     private PrivateBank privateBank; // Instanz der Bank
     private String currentAccount; // Der aktuelle Account
@@ -76,15 +72,15 @@ public class AccountViewController {
     @FXML
     private void handleBackButton() throws IOException, AccountAlreadyExistsException, TransactionAttributeException {
         // Szenenwechsel zurück zur MainView
-        // Lade die FXML-Datei für die AccountView
+        // Lade die FXML-Datei für die MainView
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainView.fxml"));
         Parent MainView = loader.load();
 
-        // Holen Sie sich den AccountViewController und setzen Sie den Account-Namen
+        // Holt den MainViewController und initalisiert ihn
         MainViewController controller = loader.getController();
         controller.initialize();
 
-        // Erstelle eine neue Szene mit der AccountView
+        // Erstelle eine neue Szene mit der MainView
         Stage stage = (Stage) transactionListView.getScene().getWindow(); // Aktuelle Stage
         stage.setScene(new Scene(MainView));
         System.out.println("Wechsel zur Main View");
@@ -145,7 +141,7 @@ public class AccountViewController {
     }
     @FXML
     private void handleAddTransaction() {
-        Optional<Transaction> result = TransactionDialog.show();
+        Optional<Transaction> result = TransactionDialog.show(currentAccount);
 
         result.ifPresent(transaction -> {
             try {
@@ -160,7 +156,7 @@ public class AccountViewController {
 
     public class TransactionDialog {
 
-        public static Optional<Transaction> show() {
+        public static Optional<Transaction> show(String currentAcc) {
             // Dialog erstellen
             Dialog<Transaction> dialog = new Dialog<>();
             dialog.setTitle("Neue Transaktion");
@@ -176,8 +172,7 @@ public class AccountViewController {
 
             // Eingabefelder
             ComboBox<String> typeBox = new ComboBox<>();
-            typeBox.getItems().addAll("Payment", "Transfer");
-            typeBox.setValue("Payment");
+            typeBox.getItems().addAll("Payment", "Incoming Transfer", "Outgoing Transfer");
 
             TextField dateField = new TextField();
             dateField.setPromptText("Datum (DD.MM.YYYY)");
@@ -210,9 +205,20 @@ public class AccountViewController {
 
             // Dynamische Aktivierung der Felder für Transfers
             typeBox.valueProperty().addListener((obs, oldValue, newValue) -> {
-                boolean isTransfer = "Transfer".equals(newValue);
-                senderField.setDisable(!isTransfer);
-                receiverField.setDisable(!isTransfer);
+                if ("Payment".equals(newValue)) {
+                    senderField.setDisable(true);
+                    receiverField.setDisable(true);
+                }
+                else {
+                    if ("Outgoing Transfer".equals(newValue)) {
+                        senderField.setText(currentAcc);
+                        senderField.setDisable(true);
+                    }
+                    else {
+                        receiverField.setText(currentAcc);
+                        receiverField.setDisable(true);
+                    }
+                }
             });
 
             dialog.getDialogPane().setContent(grid);
@@ -220,28 +226,36 @@ public class AccountViewController {
             // Ergebnisverarbeitung
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == addButtonType) {
-                    try {
-                        String date = dateField.getText();
-                        double amount = Double.parseDouble(amountField.getText());
-                        String description = descriptionField.getText();
+                    if (typeBox.getValue() == null || dateField.getText().isEmpty() || amountField.getText().isEmpty() || descriptionField.getText().isEmpty()){
+                        showError("Ungültige Eingabe", "Es müssen alle Felder ausgefüllt werden");
+                    }
+                    else {
+                        try {
+                            String date = dateField.getText();
+                            double amount = Double.parseDouble(amountField.getText());
+                            String description = descriptionField.getText();
 
-                        if (typeBox.getValue().equals("Payment")) {
-                            return new Payment(date, amount, description);
-                        } else {
-                            String sender = senderField.getText();
-                            String receiver = receiverField.getText();
-
-                            // Unterscheidung zwischen Incoming und Outgoing
-                            if (amount > 0) {
-                                return new Transfer(date, amount, description, sender, receiver);
+                            if (typeBox.getValue().equals("Payment")) {
+                                return new Payment(date, amount, description);
                             } else {
-                                return new Transfer(date, amount, description, receiver, sender);
+                                if (senderField.getText().isEmpty() || receiverField.getText().isEmpty()) {
+                                    showError("Ungültige Eingabe", "Es müssen alle Felder ausgefüllt werden");
+                                }
+                                else {
+                                    String sender = senderField.getText();
+                                    String receiver = receiverField.getText();
+                                    if (typeBox.getValue().equals("Outgoing Transfer")) {
+                                        return new OutgoingTransfer(date, amount, description, sender, receiver);
+                                    } else {
+                                        return new IncomingTransfer(date, amount, description, sender, receiver);
+                                    }
+                                }
                             }
+                        } catch (NumberFormatException ex) {
+                            showError("Ungültiger Betrag", "Der Betrag muss eine Zahl sein.");
+                        } catch (TransactionAttributeException e) {
+                            showError("Ungültige Eingabe", e.getMessage());
                         }
-                    } catch (NumberFormatException ex) {
-                        showError("Ungültiger Betrag", "Der Betrag muss eine Zahl sein.");
-                    } catch (TransactionAttributeException e) {
-                        showError("Ungültige Eingabe", e.getMessage());
                     }
                 }
                 return null;

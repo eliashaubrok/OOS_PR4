@@ -11,10 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import bank.PrivateBank;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class MainViewController {
@@ -48,7 +46,15 @@ public class MainViewController {
             });
 
             MenuItem deleteMenuItem = new MenuItem("Löschen");
-            deleteMenuItem.setOnAction(e -> handleDeleteAccount(cell.getItem()));
+            deleteMenuItem.setOnAction(e -> {
+                try {
+                    handleDeleteAccount(cell.getItem());
+                } catch (AccountDoesNotExistException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
 
             contextMenu.getItems().addAll(selectMenuItem, deleteMenuItem);
             cell.textProperty().bind(cell.itemProperty());
@@ -68,8 +74,10 @@ public class MainViewController {
             try {
                 privateBank.createAccount(accountName);
                 accounts.add(accountName); // Aktualisiere die ListView
-            } catch (IOException | AccountAlreadyExistsException e) {
-                showError("Fehler beim Erstellen", "Account konnte nicht erstellt werden.");
+            } catch (AccountAlreadyExistsException e) {
+                showError("Fehler beim Erstellen", "Account existiert bereits.");
+            } catch (IOException e){
+            showError("Fehler beim Erstellen", "Eingabe ungültig.");
             }
         });
     }
@@ -90,19 +98,15 @@ public class MainViewController {
         System.out.println("Account ausgewählt: " + accountName);
     }
 
-    private void handleDeleteAccount(String accountName) {
+    private void handleDeleteAccount(String accountName) throws AccountDoesNotExistException, IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Account löschen");
         alert.setHeaderText("Möchten Sie diesen Account wirklich löschen?");
         alert.setContentText("Account: " + accountName);
 
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            try {
-                privateBank.deleteAccount(accountName);
-                accounts.remove(accountName); // Aktualisiere die ListView
-            } catch (IOException | AccountDoesNotExistException e) {
-                showError("Fehler beim Löschen", "Account konnte nicht gelöscht werden.");
-            }
+            privateBank.deleteAccount(accountName);
+            accounts.remove(accountName); // Aktualisiere die ListView
         }
     }
 

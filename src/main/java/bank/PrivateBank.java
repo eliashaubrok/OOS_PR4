@@ -313,7 +313,7 @@ public class PrivateBank implements Bank{
 	public List<Transaction> getTransactionsSorted(String account, boolean asc) {
 		if (this.accountToTransaction.containsKey(account)) {
 			List<Transaction> transactionList = this.accountToTransaction.get(account);
-	        transactionList.sort(Comparator.comparing(Transaction::getamount));
+	        transactionList.sort(Comparator.comparing(Transaction::calculate));
 	        if(!asc){
 	            Collections.reverse(transactionList);
 	        }
@@ -336,10 +336,10 @@ public class PrivateBank implements Bank{
 		if (this.accountToTransaction.containsKey(account)) {
 			List<Transaction> transactionLinkedList= new LinkedList<Transaction>();
 		    for(Transaction entry: this.accountToTransaction.get(account)){
-		        if(entry.getamount()>0 && positive){
+		        if(entry.calculate()>0 && positive){
 		            transactionLinkedList.add(entry);
 		        }
-		        if(entry.getamount()<=0 && !positive){
+		        if(entry.calculate()<=0 && !positive){
 		            transactionLinkedList.add(entry);
 		        }
 		    }
@@ -396,6 +396,13 @@ public class PrivateBank implements Bank{
 		writer.close();
 	}
 
+	/**
+	 * Löescht den Account aus der Bank (auch das JSON-File)
+	 *
+	 * @param account String accountname
+	 * @throws AccountDoesNotExistException
+	 * @throws IOException
+	 */
 	@Override
 	public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
 		try {
@@ -422,6 +429,9 @@ public class PrivateBank implements Bank{
 		}
 	}
 
+	/**
+	 * @return Array List of keys (hier accountnamen)
+	 */
 	@Override
 	public List<String> getAllAccounts() {
 		return (new ArrayList<>(this.accountToTransaction.keySet()));

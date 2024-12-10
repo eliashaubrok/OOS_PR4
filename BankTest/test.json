@@ -1,0 +1,42 @@
+[
+  {
+    "CLASSNAME": "IncomingTransfer",
+    "INSTANCE": {
+      "sender": "u2",
+      "recipient": "test",
+      "date": "1.1.1",
+      "amount": 200.0,
+      "description": "test 1"
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.0,
+      "outgoingInterest": 0.0,
+      "date": "1.1.1",
+      "amount": 200.0,
+      "description": "test 3"
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.0,
+      "outgoingInterest": 0.0,
+      "date": "1.1.1",
+      "amount": -200.0,
+      "description": "test 4"
+    }
+  },
+  {
+    "CLASSNAME": "OutgoingTransfer",
+    "INSTANCE": {
+      "sender": "test",
+      "recipient": "u2",
+      "date": "1.1.1",
+      "amount": 200.0,
+      "description": "geld weg"
+    }
+  }
+]
